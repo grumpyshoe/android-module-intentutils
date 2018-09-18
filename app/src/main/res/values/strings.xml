@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">IntentUtils</string>
+    <string name="action">On Button click to following intent is opened:\n\nval i = Intent(Intent.ACTION_SEND)\ni.type = "message/rfc822"\ni.putExtra(Intent.EXTRA_EMAIL, arrayOf("recipient@example.com"))\ni.putExtra(Intent.EXTRA_SUBJECT, "subject of email")\ni.putExtra(Intent.EXTRA_TEXT, "body of email")</string>
+</resources>

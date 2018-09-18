@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">IntentUtils</string>
+    <string name="no_app_for_intent_dialog_title">Hint</string>
+    <string name="no_app_for_intent_dialog_message">There are no apps that could handle this content.</string>
+    <string name="no_app_for_intent_dialog_btn_ok_text">OK</string>
+    <string name="app_chooser_dialog_title">Choose an app</string>
+</resources>
