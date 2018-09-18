@@ -72,7 +72,7 @@ For customize the title of that chooser override the string value `app_chooser_d
 If no apps can be found that could handle this intent a ÀlertDialog is shown.
 This dialog contains a **title** (default value: "*Hint*"),a **message** (default value: "*There are no apps that could handle this content.*") and a **button** (default label "*OK*").
 
-To set a custom _title_ and _message_ there are two ways ffor doing so:
+To set a custom _title_ and _message_ there are two ways:
 
 1. Override the string value `no_app_for_intent_dialog_title`, `no_app_for_intent_dialog_message` and `no_app_for_intent_dialog_btn_ok_text` with the corresponding text.
 
