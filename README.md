@@ -86,7 +86,7 @@ Intent intent = new Intent();
 intent.setType("image/*");
 intent.setAction(Intent.ACTION_PICK);
 
-IntentUtilsKt.openForResult(intent, this, 312, null);
+IntentUtilsKt.openForResult(intent, this, 3155, null);
 ```
 
 ## Customization
