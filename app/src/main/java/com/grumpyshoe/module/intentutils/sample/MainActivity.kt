@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.grumpyshoe.module.intentutils.model.NoAppAvailable
 import com.grumpyshoe.module.intentutils.open
+import com.grumpyshoe.module.intentutils.openForResult
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -15,6 +16,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         button.setOnClickListener {
+
             val i = Intent(Intent.ACTION_SEND)
             i.type = "message/rfc822"
             i.putExtra(Intent.EXTRA_EMAIL, arrayOf("recipient@example.com"))
@@ -26,6 +28,8 @@ class MainActivity : AppCompatActivity() {
 
 //          // customized message
 //          i.open(this, NoAppAvailable(message ="Custom Message Text"))
+
+            i.openForResult(this, 3155)
 
         }
 

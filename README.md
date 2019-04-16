@@ -28,7 +28,7 @@ allprojects {
 
 Add dependency to your app `build.gradle` :
 ```gradle
-implementation 'com.github.grumpyshoe:android-module-intentutils:1.0.0'
+implementation 'com.github.grumpyshoe:android-module-intentutils:1.1.0'
 ```
 
 
@@ -36,30 +36,57 @@ implementation 'com.github.grumpyshoe:android-module-intentutils:1.0.0'
 
 This library contains a [extension function](https://kotlinlang.org/docs/reference/extensions.html) for handling intent opening :
 
+### Start activity
+
+
 ```kotlin
 /* kotlin */
 
 // example intent for open a email app
-val i = Intent(Intent.ACTION_SEND)
-i.type = "message/rfc822"
-i.putExtra(Intent.EXTRA_EMAIL, arrayOf("recipient@example.com"))
-i.putExtra(Intent.EXTRA_SUBJECT, "subject of email")
-i.putExtra(Intent.EXTRA_TEXT, "body of email")
+val intent = Intent(Intent.ACTION_SEND)
+intent.type = "message/rfc822"
+intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("recipient@example.com"))
+intent.putExtra(Intent.EXTRA_SUBJECT, "subject of email")
+intent.putExtra(Intent.EXTRA_TEXT, "body of email")
 
-i.open(this)
+intent.open(this)
 ```
 
 ```java
 /* java */
 
 // example intent for open a email app
-Intent i = new Intent(Intent.ACTION_SEND);
-i.setType("message/rfc822");
-i.putExtra(Intent.EXTRA_EMAIL, new String[]{"recipient@example.com"});
-i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-i.putExtra(Intent.EXTRA_TEXT, "body of email");
+Intent intent = new Intent(Intent.ACTION_SEND);
+intent.setType("message/rfc822");
+intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"recipient@example.com"});
+intent.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+intent.putExtra(Intent.EXTRA_TEXT, "body of email");
 
-IntentUtilsKt.open(i, this, null);
+IntentUtilsKt.open(intent, this, null);
+```
+
+### Start activity for result
+
+```kotlin
+/* kotlin */
+
+// example intent for open a gallery app
+val intent = Intent()
+intent.type = "image/*"
+intent.action = Intent.ACTION_PICK
+
+intent.openForResult(this, 3155)
+```
+
+```java
+/* java */
+
+// example intent for open a gallery app
+Intent intent = new Intent();
+intent.setType("image/*");
+intent.setAction(Intent.ACTION_PICK);
+
+IntentUtilsKt.openForResult(intent, this, 312, null);
 ```
 
 ## Customization

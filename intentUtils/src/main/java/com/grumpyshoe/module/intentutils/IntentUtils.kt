@@ -24,10 +24,58 @@ import com.grumpyshoe.module.intentutils.model.NoAppAvailable
  */
 fun Intent.open(activity: Activity, noAppAvailable: NoAppAvailable? = null) {
 
-    //get a list of apps that meet your criteria above
-    val pkgAppsList = activity.packageManager.queryIntentActivities(this, PackageManager.MATCH_DEFAULT_ONLY or PackageManager.GET_RESOLVED_FILTER)
+    runPackageCheck(
+            activity = activity,
+            baseIntent = this,
+            noAppAvailable = noAppAvailable) {
 
-    var targetIntent: Intent? = null
+        activity.startActivity(it)
+    }
+
+}
+
+
+/**
+ * <p>IntentUtils contains a extension function for handling the given intent and show the correcsponding apps.
+ * At least this library handles the available list of fitting apps.
+ *
+ * For better UX, there are three posibilities that are handeled different:
+ * - if only one app can handle the intent it is open instantly
+ * - if there are more then one apps available and fitting, the app chooser is shown
+ * - if no app is available for the intent, a alert dialog is shown</p>
+ *
+ * @since    1.1.0
+ * @version  1.0.0
+ * @author   grumpyshoe
+ *
+ */
+fun Intent.openForResult(activity: Activity, requestCode: Int, noAppAvailable: NoAppAvailable? = null) {
+
+    runPackageCheck(
+            activity = activity,
+            baseIntent = this,
+            noAppAvailable = noAppAvailable) {
+
+        activity.startActivityForResult(it, requestCode)
+    }
+
+}
+
+
+/**
+ * <p>Check if there are one ore more installed apps that can handle the given intent.
+ *
+ * For better UX, there are three possibilities that are handeled different:
+ * - if only one app can handle the intent it is open instantly
+ * - if there are more then one apps available and fitting, the app chooser is shown
+ * - if no app is available for the intent, a alert dialog is shown
+ * </p>
+ */
+private fun runPackageCheck(activity: Activity, baseIntent: Intent, noAppAvailable: NoAppAvailable? = null, onHandleIntent: (Intent) -> Unit) {
+
+    //get a list of apps that meet your criteria above
+    val pkgAppsList = activity.packageManager.queryIntentActivities(baseIntent, PackageManager.MATCH_DEFAULT_ONLY or PackageManager.GET_RESOLVED_FILTER)
+
     if (pkgAppsList.isEmpty()) {
 
         var title = activity.applicationContext.getString(R.string.no_app_for_intent_dialog_title)
@@ -44,13 +92,13 @@ fun Intent.open(activity: Activity, noAppAvailable: NoAppAvailable? = null) {
         builder.setMessage(message)
         builder.setPositiveButton(button, null)
         activity.runOnUiThread { builder.create().show() }
-        return
+    } else {
+        lateinit var targetIntent: Intent
+        if (pkgAppsList.size == 1) {
+            targetIntent = baseIntent
+        } else if (pkgAppsList.size > 1) {
+            targetIntent = Intent.createChooser(baseIntent, activity.applicationContext.getString(R.string.app_chooser_dialog_title))
+        }
+        return onHandleIntent(targetIntent)
     }
-    if (pkgAppsList.size == 1) {
-        targetIntent = this
-    } else if (pkgAppsList.size > 1) {
-        targetIntent = Intent.createChooser(this, activity.applicationContext.getString(R.string.app_chooser_dialog_title))
-    }
-    activity.startActivity(targetIntent)
-
 }
