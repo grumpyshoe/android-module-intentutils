@@ -28,7 +28,7 @@ allprojects {
 
 Add dependency to your app `build.gradle` :
 ```gradle
-implementation 'com.github.grumpyshoe:android-module-intentutils:1.1.0'
+implementation 'com.github.grumpyshoe:android-module-intentutils:1.2.0'
 ```
 
 
@@ -48,6 +48,9 @@ intent.type = "message/rfc822"
 intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("recipient@example.com"))
 intent.putExtra(Intent.EXTRA_SUBJECT, "subject of email")
 intent.putExtra(Intent.EXTRA_TEXT, "body of email")
+
+// get available packages (optional)
+val packages = intent.getAvailablePackages(this)
 
 intent.open(this)
 ```

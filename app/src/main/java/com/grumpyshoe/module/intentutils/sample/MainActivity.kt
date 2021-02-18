@@ -3,10 +3,11 @@ package com.grumpyshoe.module.intentutils.sample
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.grumpyshoe.module.intentutils.model.NoAppAvailable
+import android.util.Log
+import com.grumpyshoe.module.intentutils.getAvailablePackages
 import com.grumpyshoe.module.intentutils.open
 import com.grumpyshoe.module.intentutils.openForResult
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.button
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +29,9 @@ class MainActivity : AppCompatActivity() {
 
 //          // customized message
 //          i.open(this, NoAppAvailable(message ="Custom Message Text"))
+
+            val packageCount = i.getAvailablePackages(this)
+            Log.d(javaClass.simpleName, "package count: ${packageCount.size} $packageCount")
 
             i.openForResult(this, 3155)
 

@@ -25,9 +25,10 @@ import com.grumpyshoe.module.intentutils.model.NoAppAvailable
 fun Intent.open(activity: Activity, noAppAvailable: NoAppAvailable? = null) {
 
     runPackageCheck(
-            activity = activity,
-            baseIntent = this,
-            noAppAvailable = noAppAvailable) {
+        activity = activity,
+        baseIntent = this,
+        noAppAvailable = noAppAvailable
+    ) {
 
         activity.startActivity(it)
     }
@@ -52,13 +53,27 @@ fun Intent.open(activity: Activity, noAppAvailable: NoAppAvailable? = null) {
 fun Intent.openForResult(activity: Activity, requestCode: Int, noAppAvailable: NoAppAvailable? = null) {
 
     runPackageCheck(
-            activity = activity,
-            baseIntent = this,
-            noAppAvailable = noAppAvailable) {
+        activity = activity,
+        baseIntent = this,
+        noAppAvailable = noAppAvailable
+    ) {
 
         activity.startActivityForResult(it, requestCode)
     }
 
+}
+
+/**
+ * get the available packages that can handle the given intent
+ *
+ */
+fun Intent.getAvailablePackages(activity: Activity): List<String> {
+
+    //get a list of apps that meet your criteria above
+    return activity.packageManager.queryIntentActivities(this, PackageManager.MATCH_DEFAULT_ONLY or PackageManager.GET_RESOLVED_FILTER)
+        .map {
+            it.activityInfo.packageName
+        }
 }
 
 
@@ -74,7 +89,7 @@ fun Intent.openForResult(activity: Activity, requestCode: Int, noAppAvailable: N
 private fun runPackageCheck(activity: Activity, baseIntent: Intent, noAppAvailable: NoAppAvailable? = null, onHandleIntent: (Intent) -> Unit) {
 
     //get a list of apps that meet your criteria above
-    val pkgAppsList = activity.packageManager.queryIntentActivities(baseIntent, PackageManager.MATCH_DEFAULT_ONLY or PackageManager.GET_RESOLVED_FILTER)
+    val pkgAppsList = baseIntent.getAvailablePackages(activity)
 
     if (pkgAppsList.isEmpty()) {
 
